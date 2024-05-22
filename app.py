@@ -58,11 +58,11 @@ def make_image_radable_by_cv2(image):
     return new_image
 
 if __name__ == "__main__":
-    cruz = np.array([[1,0,1],[0,0,0],[1,0,1]])
+    cruz = np.array([[1,0,1],[0,0,0],[1,0,1]])  
     diamante = np.array([[1,1,0,1,1],[1,0,0,0,1],[0,0,0,0,0],[1,0,0,0,1],[1,1,0,1,1]])
     diamante7 = np.array([[1,1,1,0,1,1,1],[1,1,0,0,0,1,1],[1,0,0,0,0,0,1],[0,0,0,0,0,0,0],[1,0,0,0,0,0,1],[1,1,0,0,0,1,1],[1,1,1,0,1,1,1]])
-    vertical_bar = np.array([[1],[1],[1],[1],[1],[1]])
-    horizontal_bar = np.array([[1,1,1,1,1]])
+    vertical_bar = np.array([[0],[0],[0],[0],[0]])
+    horizontal_bar = np.array([[0,1,0,1,0]])
 
     cruz_ct_x = 1
     cruz_ct_y = 1
@@ -73,12 +73,15 @@ if __name__ == "__main__":
     struct_elem_cruz = ElementMatrix(cruz, cruz_ct_x, cruz_ct_y)
     struct_elem_diamante = ElementMatrix(diamante, diamante_ct_x, diamante_ct_y)
     struct_elem_diamante7 = ElementMatrix(diamante7, 3, 3)
+    struct_elem_vertical_bar = ElementMatrix(vertical_bar, 0 , 0)
+    struct_elem_horizontal_bar = ElementMatrix(horizontal_bar, 0, 2)
 
-    original_image = cv2.imread("cameraman.jpg", cv2.IMREAD_GRAYSCALE)
+
+    original_image = cv2.imread("figuraV2.jpg", cv2.IMREAD_GRAYSCALE)
     image = binarize_image(original_image)
-    dilated_diamond = dilation(image, struct_elem_diamante7)
+    dilated_img = dilation(image, struct_elem_horizontal_bar)
 
-    res = make_image_radable_by_cv2(dilated_diamond)
+    res = make_image_radable_by_cv2(dilated_img)
     cv2.imwrite('result.png', res)
 
     plt.imshow(res, cmap='gray')
